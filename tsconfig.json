@@ -1,7 +1,10 @@
 {
   "compileOnSave": false,
+  "exclude": [
+    "./dist/*"
+  ],
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src/",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -15,6 +18,44 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@shared": [
+        "app/shared"
+      ],
+      "@shared/*": [
+        "app/shared/*"
+      ],
+      "@testing": [
+        "testing"
+      ],
+      "@testing/*": [
+        "testing/*"
+      ],
+      "@env": [
+        "environments"
+      ],
+      "@env/*": [
+        "environments/*"
+      ],
+      "store": [
+        "../dist/store"
+      ],
+      "store/*": [
+        "../dist/store/*"
+      ],
+      "utils": [
+        "../dist/utils"
+      ],
+      "utils/*": [
+        "../dist/utils/*"
+      ],
+      "auth": [
+        "../dist/auth"
+      ],
+      "auth/*": [
+        "../dist/auth/*"
+      ]
+    }
   }
 }
