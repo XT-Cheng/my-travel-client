@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { environment } from '@env/environment';
 import { LayoutDefaultComponent } from '../layouts/default/default.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LayoutPassportComponent } from '../layouts/passport/passport.component';
+import { UserLoginComponent } from './passport/login/login.component';
 
 const routes: Routes = [
   {
@@ -11,15 +13,30 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       {
-        path: 'dashboard', component: DashboardComponent, data:
-        {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: {
           title: '仪表盘',
-          titleI18n: 'dashboard'
-        }
+          titleI18n: 'dashboard',
+        },
       },
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WidgetsModule' }
-    ]
+    ],
+  },
+  // passport
+  {
+    path: 'passport',
+    component: LayoutPassportComponent,
+    children: [
+      {
+        path: 'login',
+        component: UserLoginComponent,
+        data: { title: '登录', titleI18n: 'pro-login' },
+      },
+      // { path: 'register', component: UserRegisterComponent, data: { title: '注册', titleI18n: 'pro-register' } },
+      // { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果', titleI18n: 'pro-register-result' } }
+    ],
   },
   // 全屏布局
   // {
@@ -27,16 +44,6 @@ const routes: Routes = [
   //     component: LayoutFullScreenComponent,
   //     children: [
   //     ]
-  // },
-  // passport
-  // {
-  //   path: 'passport',
-  //   component: LayoutPassportComponent,
-  //   children: [
-  //     { path: 'login', component: UserLoginComponent, data: { title: '登录', titleI18n: 'pro-login' } },
-  //     { path: 'register', component: UserRegisterComponent, data: { title: '注册', titleI18n: 'pro-register' } },
-  //     { path: 'register-result', component: UserRegisterResultComponent, data: { title: '注册结果', titleI18n: 'pro-register-result' } }
-  //   ]
   // },
   // 单页不包裹Layout
   // { path: 'callback/:type', component: CallbackComponent },
@@ -49,6 +56,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: environment.useHash })],
-  exports: []
+  exports: [],
 })
-export class RouteRoutingModule { }
+export class RouteRoutingModule {}

@@ -14,6 +14,8 @@ import { SharedModule } from './shared/shared.module';
 import { ALAIN_I18N_TOKEN } from '@delon/theme';
 import { I18NService } from './core/i18n/service';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthModule } from 'auth';
+import { IonicStorageModule } from '@ionic/storage';
 
 export function StartupServiceFactory(
   startupService: StartupService,
@@ -33,6 +35,8 @@ export function StartupServiceFactory(
     UtilsModule.forRoot(),
     DelonModule.forRoot(),
     CoreModule.forRoot(),
+    AuthModule.forRoot(),
+    IonicStorageModule.forRoot(),
     LayoutModule,
   ],
   providers: [

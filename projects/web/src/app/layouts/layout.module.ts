@@ -9,10 +9,12 @@ import { HeaderSearchComponent } from './default/header/components/search.compon
 import { HeaderNotifyComponent } from './default/header/components/notify.component';
 import { HeaderIconComponent } from './default/header/components/icon.component';
 import { HeaderFullScreenComponent } from './default/header/components/fullscreen.component';
+import { LayoutPassportComponent } from './passport/passport.component';
 
 const COMPONENTS = [
   LayoutDefaultComponent,
-  SidebarComponent
+  SidebarComponent,
+  LayoutPassportComponent,
 ];
 
 const HEADERCOMPONENTS = [
@@ -22,18 +24,13 @@ const HEADERCOMPONENTS = [
   HeaderNotifyComponent,
   HeaderSearchComponent,
   HeaderTaskComponent,
-  HeaderUserComponent
+  HeaderUserComponent,
 ];
 
 @NgModule({
   imports: [SharedModule],
   providers: [],
-  declarations: [
-    ...COMPONENTS,
-    ...HEADERCOMPONENTS,
-  ],
-  exports: [
-    ...COMPONENTS,
-  ]
+  declarations: [...COMPONENTS, ...HEADERCOMPONENTS],
+  exports: [...COMPONENTS],
 })
-export class LayoutModule { }
+export class LayoutModule {}
