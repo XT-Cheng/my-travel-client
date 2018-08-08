@@ -15,7 +15,11 @@
     "lint-staged": "lint-staged",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "hmr": "ng serve -c=hmr",
-    "build:utils": "ng build --project=utils"
+    "build:utils": "ng build utils",
+    "build:web": "ng build web",
+    "build:mobile": "ng build mobile",
+    "build:store": "ng build store",
+    "build:auth": "ng build auth"
   },
   "private": true,
   "dependencies": {
