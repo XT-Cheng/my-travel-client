@@ -18,16 +18,15 @@
     "build:utils": "ng build utils",
     "build:web": "ng build web",
     "build:mobile": "ng build mobile",
-    "build:store": "ng build store",
-    "build:auth": "ng build auth"
+    "build:store": "ng build store"
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^6.0.3",
-    "@angular/core": "^6.0.3",
-    "@angular/compiler": "^6.0.3",
     "@angular-redux/store": "^9.0.0",
     "@angular/animations": "^6.0.3",
+    "@angular/common": "^6.0.3",
+    "@angular/compiler": "^6.0.3",
+    "@angular/core": "^6.0.3",
     "@angular/forms": "^6.0.3",
     "@angular/http": "^6.0.3",
     "@angular/platform-browser": "^6.0.3",
@@ -41,7 +40,6 @@
     "@delon/mock": "^1.3.0",
     "@delon/theme": "^1.3.0",
     "@delon/util": "^1.3.0",
-    "@ionic/storage": "^2.1.3",
     "@ngx-translate/core": "^10.0.2",
     "@types/bson": "^1.0.11",
     "ajv": "^6.4.0",

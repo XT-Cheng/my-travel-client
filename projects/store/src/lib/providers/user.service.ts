@@ -1,16 +1,12 @@
 import { NgRedux } from '@angular-redux/store';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { denormalize } from 'normalizr';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as ImmutableProxy from 'seamless-immutable';
 
 const Immutable = (<any>ImmutableProxy).default || ImmutableProxy;
-import { AuthService } from 'auth/lib/providers/authService';
-import { TokenService } from 'auth/lib/providers/tokenService';
-import { AuthToken } from 'auth/lib/providers/authToken';
 import { IUserBiz } from '../bizModel/model/user.biz.model';
 import { EntityActionTypeEnum } from '../entity/entity.action';
 import {
@@ -39,9 +35,6 @@ export class UserService extends EntityService<IUser, IUserBiz> {
   constructor(
     protected _http: HttpClient,
     protected _errorService: ErrorService,
-    private _auth: AuthService,
-    private _tokenService: TokenService,
-    private _storage: Storage,
     protected _store: NgRedux<IAppState>,
   ) {
     super(
@@ -52,19 +45,6 @@ export class UserService extends EntityService<IUser, IUserBiz> {
       `users`,
       _errorService,
     );
-
-    this._auth.onTokenChange().subscribe((token: AuthToken) => {
-      if (token.isValid()) {
-        const { id, name, nick, picture } = token.getPayload();
-        const userBiz = {
-          id,
-          name,
-          nick,
-          picture,
-        };
-        this.setCurrentUser(userBiz);
-      }
-    });
 
     this.getLoggedIn(this._store).subscribe(value => {
       this._loggedIn = value;
@@ -91,11 +71,7 @@ export class UserService extends EntityService<IUser, IUserBiz> {
     );
   }
 
-  //#endregion
-
-  //#region Private methods
-
-  private setCurrentUser(u: IUserBiz) {
+  public setCurrentUser(u: IUserBiz) {
     this._store.dispatch(
       this.succeededAction(
         EntityActionTypeEnum.LOAD,
@@ -105,6 +81,10 @@ export class UserService extends EntityService<IUser, IUserBiz> {
 
     this._store.dispatch(userLoggedInAction(u));
   }
+
+  //#endregion
+
+  //#region Private methods
 
   private getLoggedIn(store: NgRedux<IAppState>): Observable<IUserBiz> {
     return this.getLoggedInId(store).pipe(

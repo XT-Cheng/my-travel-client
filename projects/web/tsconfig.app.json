@@ -10,43 +10,5 @@
   "exclude": [
     "src/test.ts",
     "**/*.spec.ts"
-  ],
-  "paths": {
-    "@shared": [
-      "app/shared"
-    ],
-    "@shared/*": [
-      "app/shared/*"
-    ],
-    "@testing": [
-      "testing"
-    ],
-    "@testing/*": [
-      "testing/*"
-    ],
-    "@env": [
-      "environments"
-    ],
-    "@env/*": [
-      "environments/*"
-    ],
-    "store": [
-      "../dist/store"
-    ],
-    "store/*": [
-      "../dist/store/*"
-    ],
-    "utils": [
-      "../dist/utils"
-    ],
-    "utils/*": [
-      "../dist/utils/*"
-    ],
-    "auth": [
-      "../dist/auth"
-    ],
-    "auth/*": [
-      "../dist/auth/*"
-    ]
-  }
+  ]
 }

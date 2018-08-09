@@ -6,7 +6,6 @@ import {
   Optional,
   SkipSelf,
 } from '@angular/core';
-import { IonicStorageModule } from '@ionic/storage';
 
 import { EntityEpics } from './entity/entity.epic';
 import { CityService } from './providers/city.service';
@@ -53,7 +52,7 @@ function throwIfAlreadyLoaded(parentModule: any, moduleName: string) {
 }
 
 @NgModule({
-  imports: [NgReduxModule, HttpClientModule, IonicStorageModule],
+  imports: [NgReduxModule, HttpClientModule],
 })
 export class StoreModule {
   constructor(

@@ -49,12 +49,6 @@
       ],
       "utils/*": [
         "../dist/utils/*"
-      ],
-      "auth": [
-        "../dist/auth"
-      ],
-      "auth/*": [
-        "../dist/auth/*"
       ]
     }
   }

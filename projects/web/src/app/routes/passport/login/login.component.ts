@@ -1,10 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthResult } from 'auth';
-import { AuthService } from 'auth';
 
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { HttpClient } from '@angular/common/http';
+import { DelonAuthConfig } from '../../../../../../../node_modules/@delon/auth';
+import { HttpResponse } from '../../../../../../../node_modules/@types/selenium-webdriver/http';
 
 @Component({
   selector: 'passport-login',
@@ -18,14 +19,15 @@ export class UserLoginComponent implements OnDestroy {
   loading = false;
   count = 0;
   interval$: any;
-  REDIRECT_DELAY = 1000;
+  readonly REDIRECT_DELAY = 1000;
 
   constructor(
     fb: FormBuilder,
-    protected service: AuthService,
     private router: Router,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
+    private http: HttpClient,
+    private authConfig: DelonAuthConfig,
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(3)]],
@@ -88,30 +90,23 @@ export class UserLoginComponent implements OnDestroy {
 
     this.loading = true;
 
-    this.service
-      .authenticate({
+    this.http
+      .post(this.authConfig.login_url, {
         username: this.userName.value,
         password: this.password.value,
       })
-      .subscribe((result: AuthResult) => {
-        // if (result.isSuccess()) {
-        //   this.messages = result.getMessages();
-        // } else {
-        //   this.errors = result.getErrors();
-        // }
-        this.loading = false;
+      .subscribe(
+        (res: HttpResponse) => {
+          this.loading = false;
 
-        if (result.isFailure()) {
-          this.error = result.getErrors()[0];
-        }
-
-        const redirect = result.getRedirect();
-        if (redirect) {
           setTimeout(() => {
-            return this.router.navigateByUrl(redirect);
+            return this.router.navigateByUrl('/');
           }, this.REDIRECT_DELAY);
-        }
-      });
+        },
+        (err: any) => {
+          this.error = err;
+        },
+      );
 
     // setTimeout(() => {
     //   this.loading = false;

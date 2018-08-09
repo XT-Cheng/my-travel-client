@@ -3,7 +3,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DelonModule } from './delon.module';
 import { CoreModule } from './core/core.module';
 import { UtilsModule } from 'utils';
@@ -14,8 +14,7 @@ import { SharedModule } from './shared/shared.module';
 import { ALAIN_I18N_TOKEN } from '@delon/theme';
 import { I18NService } from './core/i18n/service';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthModule } from 'auth';
-import { IonicStorageModule } from '@ionic/storage';
+import { DefaultInterceptor } from './default.interceptor';
 
 export function StartupServiceFactory(
   startupService: StartupService,
@@ -35,8 +34,6 @@ export function StartupServiceFactory(
     UtilsModule.forRoot(),
     DelonModule.forRoot(),
     CoreModule.forRoot(),
-    AuthModule.forRoot(),
-    IonicStorageModule.forRoot(),
     LayoutModule,
   ],
   providers: [
@@ -47,6 +44,7 @@ export function StartupServiceFactory(
       multi: true,
     },
     { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
+    { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
