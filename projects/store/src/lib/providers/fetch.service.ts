@@ -1,7 +1,8 @@
 import { NgRedux } from '@angular-redux/store';
 import { HttpClient } from '@angular/common/http';
 import { ObjectID } from 'bson';
-import { normalize, schema } from 'normalizr';
+import { FluxStandardAction } from 'flux-standard-action';
+import { normalize } from 'normalizr';
 import { Epic } from 'redux-observable';
 import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, startWith } from 'rxjs/operators';
@@ -16,15 +17,14 @@ import {
   entityActionSucceeded,
   EntityActionTypeEnum,
   entityLoadAction,
+  IEntityActionPayload,
   IPagination,
   IQueryCondition,
-  IEntityActionPayload,
 } from '../entity/entity.action';
 import { EntityTypeEnum, IEntities } from '../entity/entity.model';
-import { IAppState } from '../store.model';
-import { FluxStandardAction } from 'flux-standard-action';
-import { IActionMetaInfo } from 'store/lib/store.action';
 import { IError } from '../error/error.model';
+import { IActionMetaInfo } from '../store.action';
+import { IAppState } from '../store.model';
 
 export abstract class FetchService {
   private DEFAULT_PAGE = 0;
@@ -37,7 +37,7 @@ export abstract class FetchService {
     protected _entityType: EntityTypeEnum,
     protected _entitySchema: any,
     protected _url: string,
-  ) {}
+  ) { }
   //#endregion
 
   //#region Actions
@@ -45,16 +45,16 @@ export abstract class FetchService {
   protected startedAction: (
     actionType: EntityActionTypeEnum,
   ) => FluxStandardAction<
-    IEntityActionPayload,
-    IActionMetaInfo
+  IEntityActionPayload,
+  IActionMetaInfo
   > = entityActionStarted(this._entityType);
 
   protected succeededAction: (
     actionType: EntityActionTypeEnum,
     entities: IEntities,
   ) => FluxStandardAction<
-    IEntityActionPayload,
-    IActionMetaInfo
+  IEntityActionPayload,
+  IActionMetaInfo
   > = entityActionSucceeded(this._entityType);
 
   protected failedAction: (
@@ -62,8 +62,8 @@ export abstract class FetchService {
     error: IError,
     actionId: string,
   ) => FluxStandardAction<
-    IEntityActionPayload,
-    IActionMetaInfo
+  IEntityActionPayload,
+  IActionMetaInfo
   > = entityActionFailed(this._entityType);
 
   protected loadAction: (
@@ -71,8 +71,8 @@ export abstract class FetchService {
     queryCondition: IQueryCondition,
     actionId: string,
   ) => FluxStandardAction<
-    IEntityActionPayload,
-    IActionMetaInfo
+  IEntityActionPayload,
+  IActionMetaInfo
   > = entityLoadAction(this._entityType);
 
   //#endregion
