@@ -1,20 +1,16 @@
-import {
-  NgModule,
-  Optional,
-  SkipSelf,
-  ModuleWithProviders,
-} from '@angular/core';
-import { NgZorroAntdModule } from 'ng-zorro-antd';
-import { AlainThemeModule } from '@delon/theme';
-import { DelonABCModule, ReuseTabStrategy, ReuseTabService } from '@delon/abc';
-import { RouteReuseStrategy } from '@angular/router';
-import { throwIfAlreadyLoaded } from './core/core.module';
-import { DelonAuthModule, JWTInterceptor, DelonAuthConfig } from '@delon/auth';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { RouteReuseStrategy } from '@angular/router';
+import { DelonABCModule, ReuseTabService, ReuseTabStrategy } from '@delon/abc';
+import { DelonAuthConfig, DelonAuthModule, JWTInterceptor } from '@delon/auth';
+import { AlainThemeModule } from '@delon/theme';
+import { NgZorroAntdModule } from 'ng-zorro-antd';
+
+import { throwIfAlreadyLoaded } from './core/core.module';
 
 export function delonAuthConfig(): DelonAuthConfig {
   return Object.assign(new DelonAuthConfig(), <DelonAuthConfig>{
-    login_url: '/login',
+    login_url: '/auth/login',
   });
 }
 
