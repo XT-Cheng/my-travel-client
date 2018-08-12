@@ -1,11 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { DA_SERVICE_TOKEN, DelonAuthConfig, ITokenModel, ITokenService, JWTTokenModel } from '@delon/auth';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { HttpClient } from '@angular/common/http';
-import { DelonAuthConfig } from '../../../../../../../node_modules/@delon/auth';
-import { HttpResponse } from '../../../../../../../node_modules/@types/selenium-webdriver/http';
 
 @Component({
   selector: 'passport-login',
@@ -26,6 +24,7 @@ export class UserLoginComponent implements OnDestroy {
     private router: Router,
     public msg: NzMessageService,
     private modalSrv: NzModalService,
+    @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService,
     private http: HttpClient,
     private authConfig: DelonAuthConfig,
   ) {
@@ -96,9 +95,10 @@ export class UserLoginComponent implements OnDestroy {
         password: this.password.value,
       })
       .subscribe(
-        (res: HttpResponse) => {
+        (res: any) => {
           this.loading = false;
-
+          this.tokenSrv.set(<ITokenModel>res);
+          const x = this.tokenSrv.get(JWTTokenModel);
           setTimeout(() => {
             return this.router.navigateByUrl('/');
           }, this.REDIRECT_DELAY);
@@ -106,7 +106,7 @@ export class UserLoginComponent implements OnDestroy {
         (err: any) => {
           this.error = err;
         },
-      );
+    );
 
     // setTimeout(() => {
     //   this.loading = false;
