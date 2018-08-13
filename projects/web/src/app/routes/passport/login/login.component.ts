@@ -2,8 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DA_SERVICE_TOKEN, DelonAuthConfig, ITokenModel, ITokenService, JWTTokenModel } from '@delon/auth';
+import {
+  DA_SERVICE_TOKEN,
+  DelonAuthConfig,
+  ITokenModel,
+  ITokenService,
+  JWTTokenModel,
+} from '@delon/auth';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { UserService } from 'store';
 
 @Component({
   selector: 'passport-login',
@@ -27,6 +34,7 @@ export class UserLoginComponent implements OnDestroy {
     @Inject(DA_SERVICE_TOKEN) private tokenSrv: ITokenService,
     private http: HttpClient,
     private authConfig: DelonAuthConfig,
+    private usrSrv: UserService,
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required, Validators.minLength(3)]],
@@ -36,6 +44,12 @@ export class UserLoginComponent implements OnDestroy {
       remember: [true],
     });
     this.modalSrv.closeAll();
+
+    this.tokenSrv.change().subscribe((token: JWTTokenModel) => {
+      if (token && !token.isExpired()) {
+        this.usrSrv.setCurrentUser(token.payload);
+      }
+    });
   }
 
   // region: fields
@@ -97,7 +111,9 @@ export class UserLoginComponent implements OnDestroy {
       .subscribe(
         (res: any) => {
           this.loading = false;
-          this.tokenSrv.set(<ITokenModel>res);
+          const jwt = new JWTTokenModel();
+          jwt.token = res.token;
+          this.tokenSrv.set(jwt);
           const x = this.tokenSrv.get(JWTTokenModel);
           setTimeout(() => {
             return this.router.navigateByUrl('/');
@@ -106,7 +122,7 @@ export class UserLoginComponent implements OnDestroy {
         (err: any) => {
           this.error = err;
         },
-    );
+      );
 
     // setTimeout(() => {
     //   this.loading = false;

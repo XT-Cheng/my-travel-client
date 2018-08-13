@@ -15,6 +15,8 @@ import { ALAIN_I18N_TOKEN } from '@delon/theme';
 import { I18NService } from './core/i18n/service';
 import { TranslateModule } from '@ngx-translate/core';
 import { DefaultInterceptor } from './default.interceptor';
+import { StoreModule } from 'store';
+import { StoreConfig } from '../../../store/src/lib/store.config';
 
 export function StartupServiceFactory(
   startupService: StartupService,
@@ -22,12 +24,18 @@ export function StartupServiceFactory(
   return () => startupService.load();
 }
 
+export function storeConfig(): StoreConfig {
+  return Object.assign(new StoreConfig(), <StoreConfig>{
+    api_host: 'localhost:3000'
+  });
+}
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    StoreModule.forRoot(),
     SharedModule,
     RoutesModule,
     TranslateModule.forRoot(),
@@ -45,6 +53,7 @@ export function StartupServiceFactory(
     },
     { provide: ALAIN_I18N_TOKEN, useClass: I18NService, multi: false },
     { provide: HTTP_INTERCEPTORS, useClass: DefaultInterceptor, multi: true },
+    { provide: StoreConfig, useFactory: storeConfig },
   ],
   bootstrap: [AppComponent],
 })

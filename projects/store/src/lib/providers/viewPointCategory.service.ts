@@ -9,15 +9,30 @@ import { IViewPointCategory } from '../entity/model/viewPoint.model';
 import { IAppState } from '../store.model';
 import { EntityService } from './entity.service';
 import { ErrorService } from './error.service';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
-export class ViewPointCategoryService extends EntityService<IViewPointCategory, IViewPointCategoryBiz> {
-
-    //#region Constructor
-    constructor(protected _http: HttpClient, protected _errorService: ErrorService,
-        protected _store: NgRedux<IAppState>) {
-        super(_http, _store, EntityTypeEnum.VIEWPOINTCATEGORY, viewPointCategorySchema, `viewPointCategories`, _errorService);
-    }
-    //#endregion
-
+export class ViewPointCategoryService extends EntityService<
+  IViewPointCategory,
+  IViewPointCategoryBiz
+> {
+  //#region Constructor
+  constructor(
+    protected _http: HttpClient,
+    protected _errorService: ErrorService,
+    protected _store: NgRedux<IAppState>,
+    protected _config: StoreConfig,
+  ) {
+    super(
+      _http,
+      _store,
+      EntityTypeEnum.VIEWPOINTCATEGORY,
+      viewPointCategorySchema,
+      `viewPointCategories`,
+      _errorService,
+      null,
+      _config,
+    );
+  }
+  //#endregion
 }

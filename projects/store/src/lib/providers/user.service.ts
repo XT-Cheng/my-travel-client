@@ -21,6 +21,7 @@ import { userLoggedInAction } from '../ui/reducer/user.reducer';
 import { STORE_UI_KEY } from '../ui/ui.model';
 import { EntityService } from './entity.service';
 import { ErrorService } from './error.service';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
 export class UserService extends EntityService<IUser, IUserBiz> {
@@ -36,6 +37,7 @@ export class UserService extends EntityService<IUser, IUserBiz> {
     protected _http: HttpClient,
     protected _errorService: ErrorService,
     protected _store: NgRedux<IAppState>,
+    protected _config: StoreConfig,
   ) {
     super(
       _http,
@@ -44,6 +46,8 @@ export class UserService extends EntityService<IUser, IUserBiz> {
       userSchema,
       `users`,
       _errorService,
+      null,
+      _config,
     );
 
     this.getLoggedIn(this._store).subscribe(value => {

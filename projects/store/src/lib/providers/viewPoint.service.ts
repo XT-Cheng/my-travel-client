@@ -10,36 +10,53 @@ import { IAppState } from '../store.model';
 import { EntityService } from './entity.service';
 import { ErrorService } from './error.service';
 import { ViewPointUIService } from './viewPoint.ui.service';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
 export class ViewPointService extends EntityService<IViewPoint, IViewPointBiz> {
+  //#region Constructor
+  constructor(
+    protected _http: HttpClient,
+    protected _errorService: ErrorService,
+    protected _store: NgRedux<IAppState>,
+    private _viewPointUISrv: ViewPointUIService,
+    protected _config: StoreConfig,
+  ) {
+    super(
+      _http,
+      _store,
+      EntityTypeEnum.VIEWPOINT,
+      viewPointSchema,
+      `viewPoints`,
+      _errorService,
+      _viewPointUISrv,
+      _config,
+    );
+  }
+  //#endregion
 
-    //#region Constructor
-    constructor(protected _http: HttpClient, protected _errorService: ErrorService,
-        protected _store: NgRedux<IAppState>, private _viewPointUISrv: ViewPointUIService) {
-        super(_http, _store, EntityTypeEnum.VIEWPOINT, viewPointSchema, `viewPoints`, _errorService, _viewPointUISrv);
-    }
-    //#endregion
+  //#region Protected methods
 
-    //#region Protected methods
+  protected beforeSend(bizModel: IViewPointBiz) {
+    const thumbnail = bizModel.thumbnail.startsWith(`data:image`)
+      ? ``
+      : bizModel.thumbnail;
+    const images = bizModel.images.filter(img => !img.startsWith(`data:image`));
 
-    protected beforeSend(bizModel: IViewPointBiz) {
-        const thumbnail = (bizModel.thumbnail.startsWith(`data:image`)) ? `` : bizModel.thumbnail;
-        const images = bizModel.images.filter((img) => !img.startsWith(`data:image`));
+    return Object.assign({}, bizModel, {
+      city: bizModel.city.id,
+      category: bizModel.category.id,
+      thumbnail: thumbnail,
+      images: images,
+    });
+  }
 
-        return Object.assign({}, bizModel, {
-            city: bizModel.city.id,
-            category: bizModel.category.id,
-            thumbnail: thumbnail,
-            images: images
-        });
-    }
+  protected search(bizModel: IViewPointBiz, searchKey: any): boolean {
+    return (
+      bizModel.name.indexOf(searchKey) !== -1 ||
+      bizModel.tags.findIndex(value => value === searchKey) !== -1
+    );
+  }
 
-    protected search(bizModel: IViewPointBiz, searchKey: any): boolean {
-        return bizModel.name.indexOf(searchKey) !== -1 ||
-            bizModel.tags.findIndex((value) => value === searchKey) !== -1;
-    }
-
-    //#endregion
-
+  //#endregion
 }

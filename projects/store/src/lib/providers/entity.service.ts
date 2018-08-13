@@ -24,7 +24,6 @@ const Immutable = (<any>ImmutableProxy).default || ImmutableProxy;
 
 import { isArray } from 'util';
 
-import { WEBAPI_HOST } from '../constants';
 import { IBiz } from '../bizModel/biz.model';
 import {
   dirtyAddAction,
@@ -52,6 +51,7 @@ import { FetchService } from './fetch.service';
 import { UIService } from './ui.service';
 import { FluxStandardAction } from 'flux-standard-action';
 import { IActionMetaInfo } from '../store.action';
+import { StoreConfig } from '../store.config';
 
 export abstract class EntityService<
   T extends IEntity,
@@ -123,8 +123,9 @@ export abstract class EntityService<
     protected _url: string,
     protected _errorService: ErrorService,
     protected _uiService: UIService<T, U> = null,
+    protected _config: StoreConfig,
   ) {
-    super(_http, _store, _entityType, _entitySchema, _url);
+    super(_http, _store, _entityType, _entitySchema, _url, _config);
 
     this.getAll(this._store).subscribe(value => {
       this._all = value;
@@ -634,11 +635,14 @@ export abstract class EntityService<
       }
     }
 
-    return this._http.post(`${WEBAPI_HOST}/${this._url}`, formData).pipe(
-      map(records => {
-        return normalize(this.afterReceiveInner(records), this.schema).entities;
-      }),
-    );
+    return this._http
+      .post(`${this._config.api_host}/${this._url}`, formData)
+      .pipe(
+        map(records => {
+          return normalize(this.afterReceiveInner(records), this.schema)
+            .entities;
+        }),
+      );
   }
 
   private update(
@@ -664,19 +668,25 @@ export abstract class EntityService<
       }
     }
 
-    return this._http.put(`${WEBAPI_HOST}/${this._url}`, formData).pipe(
-      map(records => {
-        return normalize(this.afterReceiveInner(records), this.schema).entities;
-      }),
-    );
+    return this._http
+      .put(`${this._config.api_host}/${this._url}`, formData)
+      .pipe(
+        map(records => {
+          return normalize(this.afterReceiveInner(records), this.schema)
+            .entities;
+        }),
+      );
   }
 
   private delete(id: string): Observable<IEntities> {
-    return this._http.delete(`${WEBAPI_HOST}/${this._url}/${id}`).pipe(
-      map(records => {
-        return normalize(this.afterReceiveInner(records), this.schema).entities;
-      }),
-    );
+    return this._http
+      .delete(`${this._config.api_host}/${this._url}/${id}`)
+      .pipe(
+        map(records => {
+          return normalize(this.afterReceiveInner(records), this.schema)
+            .entities;
+        }),
+      );
   }
   //#endregion
 

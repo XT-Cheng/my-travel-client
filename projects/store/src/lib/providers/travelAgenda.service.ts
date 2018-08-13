@@ -30,6 +30,7 @@ import { EntityService } from './entity.service';
 import { ErrorService } from './error.service';
 import { TransportationCategoryService } from './transportationCategory.service';
 import { TravelAgendaUIService } from './travelAgenda.ui.service';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
 export class TravelAgendaService extends EntityService<
@@ -43,6 +44,7 @@ export class TravelAgendaService extends EntityService<
     private _transportationCategoryService: TransportationCategoryService,
     private _travelAgendaUISrv: TravelAgendaUIService,
     protected _store: NgRedux<IAppState>,
+    protected _config: StoreConfig
   ) {
     super(
       _http,
@@ -52,6 +54,7 @@ export class TravelAgendaService extends EntityService<
       `travelAgendas`,
       _errorService,
       _travelAgendaUISrv,
+      _config
     );
   }
   //#endregion

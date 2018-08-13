@@ -10,29 +10,44 @@ import { IAppState } from '../store.model';
 import { CityUIService } from './city.ui.service';
 import { EntityService } from './entity.service';
 import { ErrorService } from './error.service';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
 export class CityService extends EntityService<ICity, ICityBiz> {
+  //#region Constructor
+  constructor(
+    protected _http: HttpClient,
+    protected _errorService: ErrorService,
+    protected _store: NgRedux<IAppState>,
+    protected _uiService: CityUIService,
+    protected _config: StoreConfig,
+  ) {
+    super(
+      _http,
+      _store,
+      EntityTypeEnum.CITY,
+      citySchema,
+      `cities`,
+      _errorService,
+      _uiService,
+      _config,
+    );
+  }
+  //#endregion
 
-    //#region Constructor
-    constructor(protected _http: HttpClient, protected _errorService: ErrorService,
-        protected _store: NgRedux<IAppState>, protected _uiService: CityUIService) {
-        super(_http, _store, EntityTypeEnum.CITY, citySchema, `cities`, _errorService, _uiService);
-    }
-    //#endregion
+  //#region Protected methods
 
-    //#region Protected methods
+  protected search(bizModel: ICityBiz, searchKey: any): boolean {
+    return bizModel.name.indexOf(searchKey) !== -1;
+  }
 
-    protected search(bizModel: ICityBiz, searchKey: any): boolean {
-        return bizModel.name.indexOf(searchKey) !== -1;
-    }
+  protected beforeSend(bizModel: ICityBiz): any {
+    const thumbnail = bizModel.thumbnail.startsWith(`data:image`)
+      ? ``
+      : bizModel.thumbnail;
 
-    protected beforeSend(bizModel: ICityBiz): any {
-        const thumbnail = (bizModel.thumbnail.startsWith(`data:image`)) ? `` : bizModel.thumbnail;
+    return Object.assign({}, bizModel, { thumbnail: thumbnail });
+  }
 
-        return Object.assign({}, bizModel, {thumbnail: thumbnail});
-    }
-
-    //#endregion
-
+  //#endregion
 }

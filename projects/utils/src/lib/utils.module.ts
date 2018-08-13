@@ -1,6 +1,11 @@
-import { NgModule, ModuleWithProviders, Optional, SkipSelf } from '@angular/core';
+import {
+  NgModule,
+  ModuleWithProviders,
+  Optional,
+  SkipSelf,
+} from '@angular/core';
 
-function throwIfAlreadyLoaded(parentModule: any, moduleName: string) {
+export function throwIfAlreadyLoaded(parentModule: any, moduleName: string) {
   if (parentModule) {
     throw new Error(
       `${moduleName} has already been loaded. Import ${moduleName} in the AppModule only.`,
@@ -9,10 +14,9 @@ function throwIfAlreadyLoaded(parentModule: any, moduleName: string) {
 }
 
 @NgModule({
-  imports: [
-  ],
+  imports: [],
   declarations: [],
-  exports: []
+  exports: [],
 })
 export class UtilsModule {
   constructor(
@@ -26,8 +30,7 @@ export class UtilsModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: UtilsModule,
-      providers: [
-      ],
+      providers: [],
     };
   }
- }
+}

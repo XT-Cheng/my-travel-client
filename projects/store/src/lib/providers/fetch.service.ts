@@ -8,7 +8,6 @@ import { Observable, of } from 'rxjs';
 import { catchError, filter, map, mergeMap, startWith } from 'rxjs/operators';
 import { isArray } from 'util';
 
-import { WEBAPI_HOST } from '../constants';
 import {
   EntityAction,
   entityActionFailed,
@@ -25,6 +24,7 @@ import { EntityTypeEnum, IEntities } from '../entity/entity.model';
 import { IError } from '../error/error.model';
 import { IActionMetaInfo } from '../store.action';
 import { IAppState } from '../store.model';
+import { StoreConfig } from '../store.config';
 
 export abstract class FetchService {
   private DEFAULT_PAGE = 0;
@@ -37,7 +37,8 @@ export abstract class FetchService {
     protected _entityType: EntityTypeEnum,
     protected _entitySchema: any,
     protected _url: string,
-  ) { }
+    protected _config: StoreConfig,
+  ) {}
   //#endregion
 
   //#region Actions
@@ -45,16 +46,16 @@ export abstract class FetchService {
   protected startedAction: (
     actionType: EntityActionTypeEnum,
   ) => FluxStandardAction<
-  IEntityActionPayload,
-  IActionMetaInfo
+    IEntityActionPayload,
+    IActionMetaInfo
   > = entityActionStarted(this._entityType);
 
   protected succeededAction: (
     actionType: EntityActionTypeEnum,
     entities: IEntities,
   ) => FluxStandardAction<
-  IEntityActionPayload,
-  IActionMetaInfo
+    IEntityActionPayload,
+    IActionMetaInfo
   > = entityActionSucceeded(this._entityType);
 
   protected failedAction: (
@@ -62,8 +63,8 @@ export abstract class FetchService {
     error: IError,
     actionId: string,
   ) => FluxStandardAction<
-  IEntityActionPayload,
-  IActionMetaInfo
+    IEntityActionPayload,
+    IActionMetaInfo
   > = entityActionFailed(this._entityType);
 
   protected loadAction: (
@@ -71,8 +72,8 @@ export abstract class FetchService {
     queryCondition: IQueryCondition,
     actionId: string,
   ) => FluxStandardAction<
-  IEntityActionPayload,
-  IActionMetaInfo
+    IEntityActionPayload,
+    IActionMetaInfo
   > = entityLoadAction(this._entityType);
 
   //#endregion
@@ -158,7 +159,7 @@ export abstract class FetchService {
     pagination: IPagination,
     queryCondition: IQueryCondition,
   ): Observable<IEntities> {
-    return this._http.get(`${WEBAPI_HOST}/${this._url}`).pipe(
+    return this._http.get(`${this._config.api_host}/${this._url}`).pipe(
       map(records => {
         return normalize(this.afterReceiveInner(records), this.schema).entities;
       }),

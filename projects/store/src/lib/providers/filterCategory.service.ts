@@ -14,14 +14,15 @@ import { IFilterCategory } from '../entity/model/filterCategory.model';
 import { IAppState } from '../store.model';
 import { EntityService } from './entity.service';
 import { ErrorService } from './error.service';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
 export class FilterCategoryService extends EntityService<IFilterCategory, IFilterCategoryBiz> {
 
     //#region Constructor
     constructor(protected _http: HttpClient, protected _errorService: ErrorService,
-        protected _store: NgRedux<IAppState>) {
-        super(_http, _store, EntityTypeEnum.FILTERCATEGORY, filterCategorySchema, `filterCategories`, _errorService);
+        protected _store: NgRedux<IAppState>, protected _config: StoreConfig) {
+        super(_http, _store, EntityTypeEnum.FILTERCATEGORY, filterCategorySchema, `filterCategories`, _errorService, null, _config);
     }
     //#endregion
 

@@ -23,6 +23,8 @@ import { ViewPointUIService } from './providers/viewPoint.ui.service';
 import { ViewPointCategoryService } from './providers/viewPointCategory.service';
 import { RootEpics } from './store.epic';
 import { SearchService } from './providers/search.service';
+import { throwIfAlreadyLoaded } from 'utils';
+import { StoreConfig } from './store.config';
 
 const PROVIDERS = [
   ErrorService,
@@ -41,15 +43,8 @@ const PROVIDERS = [
   ViewPointUIService,
   DataFlushService,
   SearchService,
+  StoreConfig,
 ];
-
-function throwIfAlreadyLoaded(parentModule: any, moduleName: string) {
-  if (parentModule) {
-    throw new Error(
-      `${moduleName} has already been loaded. Import ${moduleName} in the AppModule only.`,
-    );
-  }
-}
 
 @NgModule({
   imports: [NgReduxModule, HttpClientModule],
