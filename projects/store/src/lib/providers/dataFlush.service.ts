@@ -1,5 +1,5 @@
 import { NgRedux } from '@angular-redux/store';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector, Inject } from '@angular/core';
 import { Epic } from 'redux-observable';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import {
@@ -28,6 +28,8 @@ import { EntityTypeEnum } from '../entity/entity.model';
 import { IAppState, STORE_KEY } from '../store.model';
 import { CityService } from './city.service';
 import { TravelAgendaService } from './travelAgenda.service';
+import { IStore, DelonAuthConfig, DA_STORE_TOKEN } from '@delon/auth';
+import { StoreConfig } from '../store.config';
 
 @Injectable()
 export class DataFlushService {
@@ -55,6 +57,8 @@ export class DataFlushService {
     private _travelAgendaService: TravelAgendaService,
     private _cityService: CityService,
     private _store: NgRedux<IAppState>,
+    @Inject(DA_STORE_TOKEN) private _storage: IStore,
+    private _storeConfig: StoreConfig,
   ) {
     this.getDirtyIds(this._store).subscribe(value => {
       this._dirtyIds$.next(value);
@@ -109,7 +113,7 @@ export class DataFlushService {
   }
 
   public restoreState() {
-    const value = localStorage.get('state');
+    const value = this._storage.get(this._storeConfig.state_key);
 
     this._stateRestored$.next(true);
 

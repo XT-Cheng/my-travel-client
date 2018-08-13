@@ -14,7 +14,7 @@ import { throwIfAlreadyLoaded } from 'utils';
 
 export function delonAuthConfig(): DelonAuthConfig {
   return Object.assign(new DelonAuthConfig(), <DelonAuthConfig>{
-    login_url: '/auth/login',
+    login_url: '/passport/login',
   });
 }
 

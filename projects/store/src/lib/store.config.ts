@@ -16,4 +16,5 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class StoreConfig {
   api_host = '';
+  state_key = 'state';
 }

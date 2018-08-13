@@ -60,7 +60,7 @@ export class UserService extends EntityService<IUser, IUserBiz> {
   //#region Public methods
 
   public get loggedIn$(): Observable<IUserBiz> {
-    return this._loggedIn$;
+    return this._loggedIn$.asObservable();
   }
 
   public get loggedIn(): IUserBiz {

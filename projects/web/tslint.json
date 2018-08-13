@@ -3,8 +3,10 @@
   "rules": {
     "directive-selector": [
       true,
-      "attribute",
-      "app",
+      "attribute", [
+        "app",
+        "mt",
+      ],
       "camelCase"
     ],
     "component-selector": [

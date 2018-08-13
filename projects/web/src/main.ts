@@ -6,7 +6,7 @@ import { environment } from './environments/environment';
 
 import { preloaderFinished } from '@delon/theme';
 import { hmrBootstrap } from './hmr';
-preloaderFinished();
+// preloaderFinished();
 
 if (environment.production) {
   enableProdMode();

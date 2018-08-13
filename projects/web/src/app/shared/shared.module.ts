@@ -6,11 +6,12 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { AlainThemeModule } from '@delon/theme';
 import { DelonABCModule } from '@delon/abc';
 import { TranslateModule } from '@ngx-translate/core';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 const THIRDMODULES = [NgZorroAntdModule, TranslateModule];
 
 const COMPONENTS = [];
-const DIRECTIVES = [];
+const DIRECTIVES = [AutofocusDirective];
 
 @NgModule({
   imports: [

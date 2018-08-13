@@ -26,7 +26,7 @@ export function StartupServiceFactory(
 
 export function storeConfig(): StoreConfig {
   return Object.assign(new StoreConfig(), <StoreConfig>{
-    api_host: 'localhost:3000'
+    api_host: 'localhost:3000',
   });
 }
 @NgModule({
@@ -35,7 +35,6 @@ export function storeConfig(): StoreConfig {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    StoreModule.forRoot(),
     SharedModule,
     RoutesModule,
     TranslateModule.forRoot(),
@@ -43,6 +42,7 @@ export function storeConfig(): StoreConfig {
     DelonModule.forRoot(),
     CoreModule.forRoot(),
     LayoutModule,
+    StoreModule.forRoot(),
   ],
   providers: [
     {
